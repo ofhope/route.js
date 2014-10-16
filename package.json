@@ -1,0 +1,26 @@
+{
+  "name": "route.js",
+  "version": "0.0.0",
+  "description": "route.js ========",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bambii7/route.js.git"
+  },
+  "author": "Alexis Hope",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bambii7/route.js/issues"
+  },
+  "homepage": "https://github.com/bambii7/route.js",
+  "devDependencies": {
+    "grunt-cli": "~0.1.7",
+    "grunt": "~0.4.1",
+    "grunt-contrib-uglify": "~0.4.0",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-watch": "^0.6.1"
+  }
+}
