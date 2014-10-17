@@ -52,8 +52,18 @@ describe( "Router", function() {
         router.route( '/abc/:id', func );
         router.dispatch( '/abc/123' );
         
-//        router.dispatch( '/route/abc' );
-//        expect( spy ).toHaveBeenCalledWith( {id: '123' } );
+    });
+    
+    it( "should call all the given callbacks to a route", function() {
+        var router = new Router();
+        var spy1 = jasmine.createSpy( "testFunc1" );
+        var spy2 = jasmine.createSpy( "testFunc2" );
+        var spy3 = jasmine.createSpy( "testFunc3" );
+        router.route( '/route', [spy1, spy2, spy3] );
+        router.dispatch( '/route' );
+        expect( spy1 ).toHaveBeenCalled();
+        expect( spy2 ).toHaveBeenCalled();
+        expect( spy3 ).toHaveBeenCalled();
     });
     
     xit( "", function() {
