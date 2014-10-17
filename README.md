@@ -13,3 +13,4 @@ Simple frontend route handler, intended use with History.js or other single page
         router.dispatch( History.getState().url );
     });
     
+Arguably you could use this without any History.js or single page app and just call `router.dispatch( window.location.toString() )` on page load (after mapping your routes). It still offers a convenient way of mapping behaviours.
