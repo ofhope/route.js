@@ -24,3 +24,9 @@ var PathRegexp = function(path, keys, sensitive, strict) {
         .replace(/\*/g, '(.*)');
     return new RegExp('^' + path + '$', sensitive ? '' : 'i');
 }
+
+var urlToRelative = function( absolute ) {
+    var loc = document.createElement('a');
+    loc.href = absolute;
+    return loc.pathname;
+}

@@ -29,7 +29,9 @@ Router.prototype.match = function( path ){
 };
 
 Router.prototype.dispatch = function( path ) {
-    var i = 0, len, route = this.match( path );
+    var i = 0, len, route;
+    path = urlToRelative( path );
+    route = this.match( path );
     if( !route ) {
         return false;
     }
