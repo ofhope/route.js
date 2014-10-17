@@ -15,13 +15,10 @@
  */
 
 function Route( path, callbacks, options) {
-  options = options || {};
-  this.path = path;
-  this.callbacks = callbacks;
-  this.regexp = PathRegexp(path
-    , this.keys = []
-    , options.sensitive
-    , options.strict);
+    options = options || {};
+    this.path = path;
+    this.callbacks = callbacks;
+    this.regexp = PathRegexp(path, this.keys = [], options.sensitive, options.strict);
 }
 
 /**
@@ -34,31 +31,30 @@ function Route( path, callbacks, options) {
  */
 
 Route.prototype.match = function(path){
-  var keys = this.keys
-    , params = this.params = []
-    , m = this.regexp.exec(path);
+    var keys = this.keys,
+        params = this.params = [],
+        m = this.regexp.exec(path);
+    
+    if (!m) return false;
+    
+    for (var i = 1, len = m.length; i < len; ++i) {
+        var key = keys[i - 1];
 
-  if (!m) return false;
+        try {
+            var val = 'string' == typeof m[i] ? decodeURIComponent(m[i]) : m[i];
+        } catch(e) {
+            var err = new Error("Failed to decode param '" + m[i] + "'");
+            err.status = 400;
+            throw err;
+        }
 
-  for (var i = 1, len = m.length; i < len; ++i) {
-    var key = keys[i - 1];
-
-    try {
-      var val = 'string' == typeof m[i]
-        ? decodeURIComponent(m[i])
-        : m[i];
-    } catch(e) {
-      var err = new Error("Failed to decode param '" + m[i] + "'");
-      err.status = 400;
-      throw err;
+        if (key) {
+            params[key.name] = val;
+        } else {
+            params.push(val);
+        }
+        
     }
-
-    if (key) {
-      params[key.name] = val;
-    } else {
-      params.push(val);
-    }
-  }
-
-  return true;
+    
+    return true;
 };
