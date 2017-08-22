@@ -1,29 +1,85 @@
-/**
- * Path Regexp
- *
- * @param path:String - Route to match
- */
-var PathRegexp = function(path, keys, sensitive, strict) {
-    if (toString.call(path) == '[object RegExp]') return path;
-    if (Array.isArray(path)) path = '(' + path.join('|') + ')';
-    path = path
-        .concat(strict ? '' : '/?')
-        .replace(/\/\(/g, '(?:/')
-        .replace(/(\/)?(\.)?:(\w+)(?:(\(.*?\)))?(\?)?(\*)?/g, function(_, slash, format, key, capture, optional, star){
-            keys.push({ name: key, optional: !! optional });
-            slash = slash || '';
-            return ''
-            + (optional ? '' : slash)
-            + '(?:'
-            + (optional ? slash : '')
-            + (format || '') + (capture || (format && '([^/.]+?)' || '([^/]+?)')) + ')'
-            + (optional || '')
-            + (star ? '(/*)?' : '');
-        })
-        .replace(/([\/.])/g, '\\$1')
-        .replace(/\*/g, '(.*)');
-    return new RegExp('^' + path + '$', sensitive ? '' : 'i');
-};
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else {
+		var a = factory();
+		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
+	}
+})(this, function() {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 /**
  * Initialize `Route` with the given `path`,
  * and an array of `callbacks` and `options`.
@@ -39,7 +95,7 @@ var PathRegexp = function(path, keys, sensitive, strict) {
  * @api private
  */
 
-function Route( path, callbacks, options) {
+function Route(path, callbacks, options) {
     options = options || {};
     this.path = path;
     this.callbacks = callbacks;
@@ -55,19 +111,19 @@ function Route( path, callbacks, options) {
  * @api private
  */
 
-Route.prototype.match = function(path){
+Route.prototype.match = function (path) {
     var keys = this.keys,
         params = this.params = [],
         m = this.regexp.exec(path);
-    
+
     if (!m) return false;
-    
+
     for (var i = 1, len = m.length; i < len; ++i) {
         var key = keys[i - 1];
 
         try {
             var val = 'string' == typeof m[i] ? decodeURIComponent(m[i]) : m[i];
-        } catch(e) {
+        } catch (e) {
             var err = new Error("Failed to decode param '" + m[i] + "'");
             err.status = 400;
             throw err;
@@ -78,47 +134,11 @@ Route.prototype.match = function(path){
         } else {
             params.push(val);
         }
-        
     }
-    
+
     return true;
-};;function Router() {
-    this.routes = [];
-}
-
-Router.prototype.route = function( path, callbacks ){
-    // if callbacks is singular function wrap in array
-    callbacks = typeof callbacks === 'function' ? [callbacks] : callbacks;
-
-    // create the route
-    var route = new Route( path, callbacks );
-
-    // add it
-    this.routes.push( route );
-    return this;
 };
 
-Router.prototype.match = function( path ){
-    var i = 0,
-        len = this.routes.length,
-        route = undefined;
-
-    // matching routes
-    for( i; i < len; i++ ) {
-        route = this.routes[i];
-        if ( route.match( path ) ) {
-            return route;
-        }
-    }
-};
-
-Router.prototype.dispatch = function( path ) {
-    var i = 0, len, route = this.match( path );
-    if( !route ) {
-        return false;
-    }
-    len = route.callbacks.length;
-    for( i; i < len; i++ ) {
-        route.callbacks[i].call( route, route.params );
-    }
-};
+/***/ })
+/******/ ]);
+});
