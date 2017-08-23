@@ -1,17 +1,18 @@
 
 export default class Path {
   static urlToRelative(absolute) {
-    var loc = document.createElement('a');
-    loc.href = absolute;
-    return loc.pathname;
+    let loc = document.createElement('a')
+    loc.href = absolute
+    return loc.pathname
   }
+  
   static regexp(path, keys, sensitive, strict) {
-    if (toString.call(path) == '[object RegExp]') return path;
-    if (Array.isArray(path)) path = '(' + path.join('|') + ')';
+    if (toString.call(path) == '[object RegExp]') return path
+    if (Array.isArray(path)) path = '(' + path.join('|') + ')'
     path = path
         .concat(strict ? '' : '/?')
         .replace(/\/\(/g, '(?:/')
-        .replace(/(\/)?(\.)?:(\w+)(?:(\(.*?\)))?(\?)?(\*)?/g, function(_, slash, format, key, capture, optional, star){
+        .replace(/(\/)?(\.)?:(\w+)(?:(\(.*?\)))?(\?)?(\*)?/g, (_, slash, format, key, capture, optional, star) => {
             keys.push({ name: key, optional: !! optional });
             slash = slash || '';
             return ''
