@@ -1,7 +1,7 @@
 describe( "PathRegexp", function() {
     
     it( "should return a new RegEx to match given path", function() {
-        var pathx = PathRegexp( '/route' );
+        var pathx = Path.regexp( '/route' );
         expect( pathx.exec( '/route' ) ).toBeTruthy();
         expect( pathx.exec( '/Route' ) ).toBeTruthy();
         expect( pathx.exec( '/Route/' ) ).toBeTruthy();
@@ -27,10 +27,6 @@ describe( "PathRegexp", function() {
         var pathx = PathRegexp( '/route/*' );
         expect( pathx.exec( '/route/abc' ) ).toBeTruthy();
         expect( pathx.exec( '/route/123/abc' ) ).toBeTruthy();
-    });
-    
-    xit( "", function() {
-        expect(  ).toEqual(  );
     });
 
 });
