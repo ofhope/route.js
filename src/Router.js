@@ -1,8 +1,11 @@
-function Router() {
-    this.routes = [];
-}
+import Path from './Path'
 
-Router.prototype.route = function( path, callbacks ){
+export default class Router {
+  constructor() {
+    this.routes = [];
+  }
+  
+  route(path, callbacks) {
     // if callbacks is singular function wrap in array
     callbacks = typeof callbacks === 'function' ? [callbacks] : callbacks;
 
@@ -12,9 +15,9 @@ Router.prototype.route = function( path, callbacks ){
     // add it
     this.routes.push( route );
     return this;
-};
-
-Router.prototype.match = function( path ){
+  }
+  
+  match(path) {
     var i = 0,
         len = this.routes.length,
         route = undefined;
@@ -26,11 +29,11 @@ Router.prototype.match = function( path ){
             return route;
         }
     }
-};
-
-Router.prototype.dispatch = function( path ) {
+  }
+  
+  dispatch(path) {
     var i = 0, len, route;
-    path = urlToRelative( path );
+    path = Path.urlToRelative( path );
     route = this.match( path );
     if( !route ) {
         return false;
@@ -39,4 +42,6 @@ Router.prototype.dispatch = function( path ) {
     for( i; i < len; i++ ) {
         route.callbacks[i].call( route, route.params );
     }
-};
+  }
+}
+  

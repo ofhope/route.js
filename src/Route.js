@@ -1,36 +1,20 @@
+require("babel-register");
 
-/**
- * Initialize `Route` with the given `path`,
- * and an array of `callbacks` and `options`.
- *
- * Options:
- *
- *   - `sensitive`    enable case-sensitive routes
- *   - `strict`       enable strict matching for trailing slashes
- *
- * @param {String} path
- * @param {Array} callbacks
- * @param {Object} options.
- * @api private
- */
+import Path from './Path'
+import Router from './Router'
 
-function Route( path, callbacks, options) {
+
+
+
+export default class Route {
+  constructor(path, callbacks, options) {
     options = options || {};
     this.path = path;
     this.callbacks = callbacks;
-    this.regexp = PathRegexp(path, this.keys = [], options.sensitive, options.strict);
-}
-
-/**
- * Check if this route matches `path`, if so
- * populate `.params`.
- *
- * @param {String} path
- * @return {Boolean}
- * @api private
- */
-
-Route.prototype.match = function(path){
+    this.regexp = Path.regexp(path, this.keys = [], options.sensitive, options.strict);
+  }
+  
+  match(path) {
     var keys = this.keys,
         params = this.params = [],
         m = this.regexp.exec(path);
@@ -38,23 +22,22 @@ Route.prototype.match = function(path){
     if (!m) return false;
     
     for (var i = 1, len = m.length; i < len; ++i) {
-        var key = keys[i - 1];
-
-        try {
-            var val = 'string' == typeof m[i] ? decodeURIComponent(m[i]) : m[i];
-        } catch(e) {
-            var err = new Error("Failed to decode param '" + m[i] + "'");
-            err.status = 400;
-            throw err;
-        }
-
-        if (key) {
-            params[key.name] = val;
-        } else {
-            params.push(val);
-        }
-        
+      var key = keys[i - 1];
+      try {
+        var val = 'string' == typeof m[i] ? decodeURIComponent(m[i]) : m[i];
+      } catch(e) {
+        var err = new Error("Failed to decode param '" + m[i] + "'");
+        err.status = 400;
+        throw err;
+      }
+      if (key) {
+        params[key.name] = val;
+      } else {
+        params.push(val);
+      }
     }
-    
     return true;
-};
+  }
+}
+
+export { Route, Path, Router }

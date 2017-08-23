@@ -22,9 +22,5 @@ describe( "Route", function() {
         r.match( '/route/123' );
         expect( r.params.id ).toEqual( '123' );
     });
-    
-    xit( "", function() {
-        expect(  ).toEqual(  );
-    });
 
 });

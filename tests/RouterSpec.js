@@ -65,9 +65,5 @@ describe( "Router", function() {
         expect( spy2 ).toHaveBeenCalled();
         expect( spy3 ).toHaveBeenCalled();
     });
-    
-    xit( "", function() {
-        expect(  ).toEqual(  );
-    });
 
 });

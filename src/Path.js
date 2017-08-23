@@ -1,9 +1,11 @@
-/**
- * Path Regexp
- *
- * @param path:String - Route to match
- */
-var PathRegexp = function(path, keys, sensitive, strict) {
+
+export default class Path {
+  static urlToRelative(absolute) {
+    var loc = document.createElement('a');
+    loc.href = absolute;
+    return loc.pathname;
+  }
+  static regexp(path, keys, sensitive, strict) {
     if (toString.call(path) == '[object RegExp]') return path;
     if (Array.isArray(path)) path = '(' + path.join('|') + ')';
     path = path
@@ -24,9 +26,5 @@ var PathRegexp = function(path, keys, sensitive, strict) {
         .replace(/\*/g, '(.*)');
     return new RegExp('^' + path + '$', sensitive ? '' : 'i');
 }
-
-var urlToRelative = function( absolute ) {
-    var loc = document.createElement('a');
-    loc.href = absolute;
-    return loc.pathname;
 }
+  
