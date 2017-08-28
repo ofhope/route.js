@@ -13,9 +13,7 @@ export default class Router {
   }
   
   match(path) {
-    var i = 0,
-        len = this.routes.length,
-        route = undefined
+    var i = 0, len = this.routes.length, route
     for(i; i < len; i++) {
       route = this.routes[i]
       if (route.match(path)) {
