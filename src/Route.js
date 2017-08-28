@@ -24,7 +24,7 @@ export default class Route {
     for (var i = 1, len = m.length; i < len; ++i) {
       var key = keys[i - 1]
       try {
-        var val = 'string' == typeof m[i] ? decodeURIComponent(m[i]) : m[i]
+        var val = 'string' === typeof m[i] ? decodeURIComponent(m[i]) : m[i]
       } catch(e) {
         var err = new Error(`Failed to decode param '${m[i]}'`)
         err.status = 400
