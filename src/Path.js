@@ -15,7 +15,7 @@ export default class Path {
         .replace(/\/\(/g, '(?:/')
         .replace(path_regex, (_, slash, format, key, capture, optional, star) => {
             keys.push({ name: key, optional: !! optional })
-            slash = slash || ''
+            slash = slash || '';
             return ''
             + (optional ? '' : slash)
             + '(?:'
@@ -26,7 +26,7 @@ export default class Path {
         })
         .replace(/([\/.])/g, '\\$1')
         .replace(/\*/g, '(.*)')
-    return new RegExp('^' + path + '$', sensitive ? '' : 'i')
+    return new RegExp(`^${path}$`, sensitive ? '' : 'i')
 }
 }
   

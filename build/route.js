@@ -88,6 +88,8 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var path_regex = /(\/)?(\.)?:(\w+)(?:(\(.*?\)))?(\?)?(\*)?/g;
+
 var Path = function () {
     function Path() {
         _classCallCheck(this, Path);
@@ -105,7 +107,7 @@ var Path = function () {
         value: function regexp(path, keys, sensitive, strict) {
             if (toString.call(path) == '[object RegExp]') return path;
             if (Array.isArray(path)) path = '(' + path.join('|') + ')';
-            path = path.concat(strict ? '' : '/?').replace(/\/\(/g, '(?:/').replace(/(\/)?(\.)?:(\w+)(?:(\(.*?\)))?(\?)?(\*)?/g, function (_, slash, format, key, capture, optional, star) {
+            path = path.concat(strict ? '' : '/?').replace(/\/\(/g, '(?:/').replace(path_regex, function (_, slash, format, key, capture, optional, star) {
                 keys.push({ name: key, optional: !!optional });
                 slash = slash || '';
                 return '' + (optional ? '' : slash) + '(?:' + (optional ? slash : '') + (format || '') + (capture || format && '([^/.]+?)' || '([^/]+?)') + ')' + (optional || '') + (star ? '(/*)?' : '');
@@ -171,7 +173,7 @@ var Route = function () {
         try {
           var val = 'string' == typeof m[i] ? decodeURIComponent(m[i]) : m[i];
         } catch (e) {
-          var err = new Error("Failed to decode param '" + m[i] + "'");
+          var err = new Error('Failed to decode param \'' + m[i] + '\'');
           err.status = 400;
           throw err;
         }

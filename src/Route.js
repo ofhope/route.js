@@ -26,7 +26,7 @@ export default class Route {
       try {
         var val = 'string' == typeof m[i] ? decodeURIComponent(m[i]) : m[i]
       } catch(e) {
-        var err = new Error("Failed to decode param '" + m[i] + "'")
+        var err = new Error(`Failed to decode param '${m[i]}'`)
         err.status = 400
         throw err
       }
