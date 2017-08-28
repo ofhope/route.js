@@ -3,9 +3,6 @@ require("babel-register")
 import Path from './Path'
 import Router from './Router'
 
-
-
-
 export default class Route {
   constructor(path, callbacks, options) {
     options = options || {}
@@ -15,18 +12,18 @@ export default class Route {
   }
   
   match(path) {
-    var keys = this.keys,
+    const keys = this.keys,
         params = this.params = [],
         m = this.regexp.exec(path)
     
     if (!m) return false
     
-    for (var i = 1, len = m.length; i < len; ++i) {
-      var key = keys[i - 1]
+    for (let i = 1, len = m.length; i < len; ++i) {
+      let key = keys[i - 1], val
       try {
-        var val = 'string' === typeof m[i] ? decodeURIComponent(m[i]) : m[i]
+        val = 'string' === typeof m[i] ? decodeURIComponent(m[i]) : m[i]
       } catch(e) {
-        var err = new Error(`Failed to decode param '${m[i]}'`)
+        let err = new Error(`Failed to decode param '${m[i]}'`)
         err.status = 400
         throw err
       }

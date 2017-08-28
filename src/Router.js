@@ -13,7 +13,7 @@ export default class Router {
   }
   
   match(path) {
-    var i = 0, len = this.routes.length, route
+    let i = 0, len = this.routes.length, route
     for(i; i < len; i++) {
       route = this.routes[i]
       if (route.match(path)) {
@@ -23,7 +23,7 @@ export default class Router {
   }
   
   dispatch(path) {
-    var i = 0, len, route
+    let i = 0, len, route
     path = Path.urlToRelative( path )
     route = this.match( path )
     if(!route) {

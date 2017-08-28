@@ -8,7 +8,7 @@ export default class Path {
   }
   
   static regexp(path, keys, sensitive, strict) {
-    if (path instanceof RegExp) {return path}
+    if (path instanceof RegExp) return path
     path = Array.isArray(path) ? `(${path.join('|')})` : path
     path = path
         .concat(strict ? '' : '/?')

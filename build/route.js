@@ -105,9 +105,7 @@ var Path = function () {
   }, {
     key: 'regexp',
     value: function regexp(path, keys, sensitive, strict) {
-      if (path instanceof RegExp) {
-        return path;
-      }
+      if (path instanceof RegExp) return path;
       path = Array.isArray(path) ? '(' + path.join('|') + ')' : path;
       path = path.concat(strict ? '' : '/?').replace(/\/\(/g, '(?:/').replace(path_regex, function (_, slash, format, key, capture, optional, star) {
         keys.push({ name: key, optional: !!optional });
@@ -171,9 +169,10 @@ var Route = function () {
       if (!m) return false;
 
       for (var i = 1, len = m.length; i < len; ++i) {
-        var key = keys[i - 1];
+        var key = keys[i - 1],
+            val = void 0;
         try {
-          var val = 'string' === typeof m[i] ? decodeURIComponent(m[i]) : m[i];
+          val = 'string' === typeof m[i] ? decodeURIComponent(m[i]) : m[i];
         } catch (e) {
           var err = new Error('Failed to decode param \'' + m[i] + '\'');
           err.status = 400;
@@ -238,7 +237,7 @@ var Router = function () {
     value: function match(path) {
       var i = 0,
           len = this.routes.length,
-          route;
+          route = void 0;
       for (i; i < len; i++) {
         route = this.routes[i];
         if (route.match(path)) {
@@ -250,8 +249,8 @@ var Router = function () {
     key: 'dispatch',
     value: function dispatch(path) {
       var i = 0,
-          len,
-          route;
+          len = void 0,
+          route = void 0;
       path = _Path2.default.urlToRelative(path);
       route = this.match(path);
       if (!route) {
