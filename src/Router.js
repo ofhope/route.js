@@ -2,14 +2,14 @@ import Path from './Path'
 
 export default class Router {
   constructor() {
-    this.routes = [];
+    this.routes = []
   }
   
   route(path, callbacks) {
     callbacks = typeof callbacks === 'function' ? [callbacks] : callbacks
     let route = new Route( path, callbacks )
-    this.routes.push( route );
-    return this;
+    this.routes.push( route )
+    return this
   }
   
   match(path) {

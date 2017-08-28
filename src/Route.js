@@ -1,4 +1,4 @@
-require("babel-register");
+require("babel-register")
 
 import Path from './Path'
 import Router from './Router'

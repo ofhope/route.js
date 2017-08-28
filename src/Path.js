@@ -14,19 +14,19 @@ export default class Path {
         .concat(strict ? '' : '/?')
         .replace(/\/\(/g, '(?:/')
         .replace(path_regex, (_, slash, format, key, capture, optional, star) => {
-            keys.push({ name: key, optional: !! optional });
-            slash = slash || '';
+            keys.push({ name: key, optional: !! optional })
+            slash = slash || ''
             return ''
             + (optional ? '' : slash)
             + '(?:'
             + (optional ? slash : '')
             + (format || '') + (capture || (format && '([^/.]+?)' || '([^/]+?)')) + ')'
             + (optional || '')
-            + (star ? '(/*)?' : '');
+            + (star ? '(/*)?' : '')
         })
         .replace(/([\/.])/g, '\\$1')
-        .replace(/\*/g, '(.*)');
-    return new RegExp('^' + path + '$', sensitive ? '' : 'i');
+        .replace(/\*/g, '(.*)')
+    return new RegExp('^' + path + '$', sensitive ? '' : 'i')
 }
 }
   
