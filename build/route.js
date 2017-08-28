@@ -105,8 +105,10 @@ var Path = function () {
   }, {
     key: 'regexp',
     value: function regexp(path, keys, sensitive, strict) {
-      if (toString.call(path) === '[object RegExp]') return path;
-      if (Array.isArray(path)) path = '(' + path.join('|') + ')';
+      if (path instanceof RegExp) {
+        return path;
+      }
+      path = Array.isArray(path) ? '(' + path.join('|') + ')' : path;
       path = path.concat(strict ? '' : '/?').replace(/\/\(/g, '(?:/').replace(path_regex, function (_, slash, format, key, capture, optional, star) {
         keys.push({ name: key, optional: !!optional });
         slash = slash || '';

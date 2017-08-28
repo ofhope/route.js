@@ -8,8 +8,8 @@ export default class Path {
   }
   
   static regexp(path, keys, sensitive, strict) {
-    if (toString.call(path) === '[object RegExp]') return path
-    if (Array.isArray(path)) path = '(' + path.join('|') + ')'
+    if (path instanceof RegExp) {return path}
+    path = Array.isArray(path) ? `(${path.join('|')})` : path
     path = path
         .concat(strict ? '' : '/?')
         .replace(/\/\(/g, '(?:/')
@@ -21,6 +21,6 @@ export default class Path {
         .replace(/([\/.])/g, '\\$1')
         .replace(/\*/g, '(.*)')
     return new RegExp(`^${path}$`, sensitive ? '' : 'i')
-}
+  }
 }
   
