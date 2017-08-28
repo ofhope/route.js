@@ -1,3 +1,4 @@
+const path_regex = /(\/)?(\.)?:(\w+)(?:(\(.*?\)))?(\?)?(\*)?/g
 
 export default class Path {
   static urlToRelative(absolute) {
@@ -12,7 +13,7 @@ export default class Path {
     path = path
         .concat(strict ? '' : '/?')
         .replace(/\/\(/g, '(?:/')
-        .replace(/(\/)?(\.)?:(\w+)(?:(\(.*?\)))?(\?)?(\*)?/g, (_, slash, format, key, capture, optional, star) => {
+        .replace(path_regex, (_, slash, format, key, capture, optional, star) => {
             keys.push({ name: key, optional: !! optional });
             slash = slash || '';
             return ''
