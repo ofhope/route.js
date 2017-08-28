@@ -1,0 +1,19 @@
+engines:
+  eslint:
+    enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - javascript:
+  git-legal:
+    enabled: true
+    
+ratings:
+  paths:
+  - "src/**"
+  
+## exclude src folder from codeclimate
+exclude_paths:
+- "build/**"
+- "tests/"
