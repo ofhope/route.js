@@ -16,13 +16,7 @@ export default class Path {
         .replace(path_regex, (_, slash, format, key, capture, optional, star) => {
             keys.push({ name: key, optional: !! optional })
             slash = slash || '';
-            return ''
-            + (optional ? '' : slash)
-            + '(?:'
-            + (optional ? slash : '')
-            + (format || '') + (capture || (format && '([^/.]+?)' || '([^/]+?)')) + ')'
-            + (optional || '')
-            + (star ? '(/*)?' : '')
+            return `${(optional ? '' : slash)}(?:${(optional ? slash : '')}${(format || '')}${(capture || (format && '([^/.]+?)' || '([^/]+?)'))})${(optional || '')}${(star ? '(/*)?' : '')}`
         })
         .replace(/([\/.])/g, '\\$1')
         .replace(/\*/g, '(.*)')

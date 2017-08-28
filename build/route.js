@@ -81,7 +81,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -91,32 +91,32 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var path_regex = /(\/)?(\.)?:(\w+)(?:(\(.*?\)))?(\?)?(\*)?/g;
 
 var Path = function () {
-    function Path() {
-        _classCallCheck(this, Path);
+  function Path() {
+    _classCallCheck(this, Path);
+  }
+
+  _createClass(Path, null, [{
+    key: 'urlToRelative',
+    value: function urlToRelative(absolute) {
+      var loc = document.createElement('a');
+      loc.href = absolute;
+      return loc.pathname;
     }
+  }, {
+    key: 'regexp',
+    value: function regexp(path, keys, sensitive, strict) {
+      if (toString.call(path) === '[object RegExp]') return path;
+      if (Array.isArray(path)) path = '(' + path.join('|') + ')';
+      path = path.concat(strict ? '' : '/?').replace(/\/\(/g, '(?:/').replace(path_regex, function (_, slash, format, key, capture, optional, star) {
+        keys.push({ name: key, optional: !!optional });
+        slash = slash || '';
+        return (optional ? '' : slash) + '(?:' + (optional ? slash : '') + (format || '') + (capture || format && '([^/.]+?)' || '([^/]+?)') + ')' + (optional || '') + (star ? '(/*)?' : '');
+      }).replace(/([\/.])/g, '\\$1').replace(/\*/g, '(.*)');
+      return new RegExp('^' + path + '$', sensitive ? '' : 'i');
+    }
+  }]);
 
-    _createClass(Path, null, [{
-        key: 'urlToRelative',
-        value: function urlToRelative(absolute) {
-            var loc = document.createElement('a');
-            loc.href = absolute;
-            return loc.pathname;
-        }
-    }, {
-        key: 'regexp',
-        value: function regexp(path, keys, sensitive, strict) {
-            if (toString.call(path) == '[object RegExp]') return path;
-            if (Array.isArray(path)) path = '(' + path.join('|') + ')';
-            path = path.concat(strict ? '' : '/?').replace(/\/\(/g, '(?:/').replace(path_regex, function (_, slash, format, key, capture, optional, star) {
-                keys.push({ name: key, optional: !!optional });
-                slash = slash || '';
-                return '' + (optional ? '' : slash) + '(?:' + (optional ? slash : '') + (format || '') + (capture || format && '([^/.]+?)' || '([^/]+?)') + ')' + (optional || '') + (star ? '(/*)?' : '');
-            }).replace(/([\/.])/g, '\\$1').replace(/\*/g, '(.*)');
-            return new RegExp('^' + path + '$', sensitive ? '' : 'i');
-        }
-    }]);
-
-    return Path;
+  return Path;
 }();
 
 exports.default = Path;
@@ -171,7 +171,7 @@ var Route = function () {
       for (var i = 1, len = m.length; i < len; ++i) {
         var key = keys[i - 1];
         try {
-          var val = 'string' == typeof m[i] ? decodeURIComponent(m[i]) : m[i];
+          var val = 'string' === typeof m[i] ? decodeURIComponent(m[i]) : m[i];
         } catch (e) {
           var err = new Error('Failed to decode param \'' + m[i] + '\'');
           err.status = 400;
@@ -236,7 +236,7 @@ var Router = function () {
     value: function match(path) {
       var i = 0,
           len = this.routes.length,
-          route = undefined;
+          route;
       for (i; i < len; i++) {
         route = this.routes[i];
         if (route.match(path)) {
